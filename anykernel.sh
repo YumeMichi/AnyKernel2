@@ -58,9 +58,9 @@ dump_boot;
 # Begin ramdisk changes
 
 # Set Android version for kernel
-ver="$(file_getprop /vendor/build.prop ro.vendor.build.version.release)"
-if [ ! -z "$ver" ]; then
-  patch_cmdline "androidboot.version" "androidboot.version=$ver"
+android_ver="$(file_getprop /system/build.prop ro.build.version.release)"
+if [ ! -z "$android_ver" ]; then
+  patch_cmdline "androidboot.version" "androidboot.version=$android_ver"
 else
   patch_cmdline "androidboot.version" ""
 fi
@@ -69,12 +69,21 @@ fi
 decomp_img=$home/kernel/Image
 comp_img=$decomp_img.gz
 if [ -f $comp_img ]; then
-  if [ -d $ramdisk/.backup -o -d $ramdisk/.magisk ]; then
-    ui_print " " "Magisk detected!";
-    ui_print " " "Patching kernel so reflashing Magisk is not necessary...";
-    $bin/magiskboot --decompress $comp_img $decomp_img;
-    $bin/magiskboot --hexpatch $decomp_img 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
-    $bin/magiskboot --compress=gzip $decomp_img $comp_img;
+  if [ "$android_ver" == "10" ]; then
+    ui_print " "
+    ui_print " " "Android Q detected!";
+    ui_print " " "DON'T forget to reflash Magisk if necessary!!!";
+    ui_print " "
+  elif [ "$android_ver" == "9" ]; then
+    if [ -d $ramdisk/.backup ]; then
+      ui_print " "
+      ui_print " " "Magisk detected!";
+      ui_print " " "Patching kernel so reflashing Magisk is not necessary...";
+      ui_print " "
+      $bin/magiskboot --decompress $comp_img $decomp_img;
+      $bin/magiskboot --hexpatch $decomp_img 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
+      $bin/magiskboot --compress=gzip $decomp_img $comp_img;
+    fi;
   fi;
 
   # Concatenate all of the dtbs to the kernel
@@ -132,3 +141,5 @@ write_boot;
 
 ## End install
 ui_print " " "Done!"
+$bb umount /system
+$bb umount /vendor
