@@ -51,6 +51,12 @@ backup_file /vendor/etc/msm_irqbalance.conf;
 cp -rf $home/patch/msm_irqbalance.conf /vendor/etc/msm_irqbalance.conf;
 chmod 0644 /vendor/etc/msm_irqbalance.conf;
 
+# Make a backup of fstab.qcom
+backup_file /vendor/etc/fstab.qcom;
+
+cp -rf $home/patch/fstab.qcom /vendor/etc/fstab.qcom;
+chmod 0644 /vendor/etc/fstab.qcom;
+
 ## AnyKernel install
 ui_print " " "Decompressing boot image..."
 dump_boot;
