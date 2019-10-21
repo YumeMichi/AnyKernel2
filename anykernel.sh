@@ -46,12 +46,14 @@ replace_string /vendor/etc/init/hw/init.target.rc "write /dev/stune/top-app/sche
 append_file /vendor/etc/init/hw/init.target.rc "==== Polar Kernel ====" init.target.rc;
 
 # Make a backup of msm_irqbalance.conf
+restore_file /vendor/etc/msm_irqbalance.conf;
 backup_file /vendor/etc/msm_irqbalance.conf;
 
 cp -rf $home/patch/msm_irqbalance.conf /vendor/etc/msm_irqbalance.conf;
 chmod 0644 /vendor/etc/msm_irqbalance.conf;
 
 # Make a backup of fstab.qcom
+restore_file /vendor/etc/fstab.qcom;
 backup_file /vendor/etc/fstab.qcom;
 
 cp -rf $home/patch/fstab.qcom /vendor/etc/fstab.qcom;
