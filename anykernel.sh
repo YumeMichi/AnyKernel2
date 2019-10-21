@@ -59,6 +59,14 @@ backup_file /vendor/etc/fstab.qcom;
 cp -rf $home/patch/fstab.qcom /vendor/etc/fstab.qcom;
 chmod 0644 /vendor/etc/fstab.qcom;
 
+# Make a backup of /vendor/etc/thermal-engine*
+for files in /vendor/etc/thermal-engine*
+do
+  restore_file $files;
+  backup_file $files;
+  $bb cat /dev/null > $files;
+done
+
 ## AnyKernel install
 ui_print " " "Decompressing boot image..."
 dump_boot;
