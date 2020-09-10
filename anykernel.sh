@@ -12,7 +12,7 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=onyx
 device.name2=OnePlus
-supported.versions=6 - 10
+supported.versions=6 - 11
 supported.patchlevels=
 '; } # End properties
 
